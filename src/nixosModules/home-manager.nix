@@ -17,7 +17,7 @@ in
     (mkAliasOptionModule [ "home" ] [
       "home-manager"
       "users"
-      "default"
+      username
     ])
   ];
 
@@ -31,7 +31,7 @@ in
       };
     };
     
-    home-manager.users.default.imports = [
+    home-manager.users.${username}.imports = [
       self.homeModules.default
       outputs.homeModules.default
     ];

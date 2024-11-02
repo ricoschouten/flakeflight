@@ -15,14 +15,13 @@ in
     (mkAliasOptionModule [ "user" ] [
       "users"
       "users"
-      "default"
+      username
     ])
   ];
 
   config = {
-    users.users.default = {
-      name = username;
-      isNormalUser = true;
+    users.users.${username} = {
+      isNormalUser = mkDefault true;
       extraGroups = [ "wheel" ];
     };
   };
