@@ -1,4 +1,10 @@
-{ lib, pkgs, inputs, hostname, ... }:
+{
+  lib,
+  pkgs,
+  inputs,
+  hostname,
+  ...
+}:
 
 let
   inherit (lib) mkDefault;
@@ -14,16 +20,19 @@ in
 
   networking.hostName = hostname;
 
-  # users.defaultUserShell = pkgs.fish;
+  users.defaultUserShell = pkgs.fish;
 
-  # programs.fish = {
-  #   enable = true;
-  #   interactiveShellInit = ''
-  #     set -g fish_greeting
-  #   '';
-  # };
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = ''
+      set -g fish_greeting
+    '';
+  };
 
   programs.nh.enable = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 }
