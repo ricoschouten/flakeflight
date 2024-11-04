@@ -9,19 +9,14 @@ in
     self.nixosModules.home-manager
     self.nixosModules.wsl
     self.nixosModules.nh
+    self.nixosModules.fish
   ];
 
-  users.defaultUserShell = pkgs.fish;
   networking.hostName = hostname;
 
-  programs.fish = {
-    enable = true;
-    interactiveShellInit = ''
-      set -g fish_greeting
-    '';
+  programs = {
+    fish.enable = true;
   };
-
-  programs.nh.enable = true;
 
   nix.settings.experimental-features = [
     "nix-command"
