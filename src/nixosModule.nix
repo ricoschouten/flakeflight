@@ -1,13 +1,6 @@
-{
-  lib,
-  pkgs,
-  inputs,
-  hostname,
-  ...
-}:
+{ inputs, hostname, ... }:
 
 let
-  inherit (lib) mkDefault;
   inherit (inputs) self;
 in
 {
@@ -18,9 +11,8 @@ in
     self.nixosModules.nh
   ];
 
-  networking.hostName = hostname;
-
   users.defaultUserShell = pkgs.fish;
+  networking.hostName = hostname;
 
   programs.fish = {
     enable = true;
