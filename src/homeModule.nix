@@ -1,13 +1,6 @@
-{
-  lib,
-  pkgs,
-  inputs,
-  username,
-  ...
-}:
+{ pkgs, inputs, ... }:
 
 let
-  inherit (lib) mkDefault mkForce;
   inherit (inputs) self;
 in
 {
@@ -17,15 +10,16 @@ in
     self.homeModules.helix
   ];
 
-  home.username = mkForce username;
-  home.homeDirectory = mkDefault /home/${username};
-
   home.packages = [
     pkgs.nixd
-    pkgs.nixfmt-rfc-style                                                                                 
+    pkgs.nixfmt-rfc-style
   ];
 
-  programs.fish.enable = true;
+  programs = {
+    git.enable = true;
+    fish.enable = true;
+    nushell.enable = true;
+  };
 
   # programs.bash.enable = true;
 
@@ -33,31 +27,26 @@ in
 
   programs.zellij = {
     enable = true;
-    # enableBashIntegration = true;
     enableFishIntegration = true;
-
-    shellIntegration = {
-      autoAttach = true;
-      autoExit = true;
-    };
+    enableNushellIntegration = true;
   };
 
-  programs.helix = {                                                                                      
-    enable = true;                                                                                        
-                                                                                                          
-    languages = {                                                                                         
-      language-server.nixd = {                                                                            
-        command = "nixd";                                                                                 
-      };                                                                                                  
-                                                                                                          
-      language = [                                                                                        
-        {                                                                                                 
-          name = "nix";                                                                                   
-          language-servers = [ "nixd" ];                                                                  
-          formatter.command = "nixfmt";                                                                   
-          auto-format = true;                                                                             
-        }                                                                                                 
-      ];                                                                                                  
-    };                                                                                                    
+  programs.helix = {
+    enable = true;
+
+    languages = {
+      language-server.nixd = {
+        command = "nixd";
+      };
+
+      language = [
+        {
+          name = "nix";
+          language-servers = [ "nixd" ];
+          formatter.command = "nixfmt";
+          auto-format = true;
+        }
+      ];
+    };
   };
 }

@@ -1,4 +1,4 @@
-{ inputs, hostname, ... }:
+{ inputs, ... }:
 
 let
   inherit (inputs) self;
@@ -11,8 +11,6 @@ in
     self.nixosModules.nh
     self.nixosModules.fish
   ];
-
-  networking.hostName = hostname;
 
   programs = {
     fish.enable = true;

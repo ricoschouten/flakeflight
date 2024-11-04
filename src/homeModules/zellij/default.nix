@@ -14,6 +14,7 @@ let
     mkEnableOption
     isString
     isPath
+    readFile
     ;
 
   inherit (lib.types) str path either;
@@ -39,7 +40,7 @@ in
     };
   };
 
-  config = mkIf programs.zellij.enable {  
+  config = mkIf programs.zellij.enable {
     programs.zellij.settings.plugins."zjstatus" = {
       _props.location = "file:${zjstatus.packages.${hostPlatform.system}.default}/bin/zjstatus.wasm";
     };
@@ -51,12 +52,7 @@ in
       source = mkIfPath programs.zellij.layout;
     };
 
-    # programs.nushell.interactiveShellInit = mkIf programs.zellij.shellIntegration.enableNushellIntegration ''
-    # '';
-
-    # programs.fish.interactiveShellInit = mkIf programs.zellij.enableFishIntegration ''
-    #   eval (zellij setup --generate-auto-start fish | string collect)
-    # '';
+    programs.nushell.extraConfig = mkIf programs.zellij.enableNushellIntegration readFile ./config.nu;
 
     home.sessionVariables = {
       ZELLIJ_AUTO_ATTACH = mkIf programs.zellij.shellIntegration.autoAttach "true";

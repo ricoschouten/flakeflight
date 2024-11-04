@@ -49,23 +49,37 @@ in
 
     systems = mkDefault lib.systems.flakeExposed;
 
-    nixosConfigurations = genAttrs systems (system: mkDefault {
-      inherit system specialArgs;
-      modules = [
-        self.nixosModules.default
-        outputs.nixosModules.default
-      ];
-    });
+    nixosConfigurations = genAttrs systems (
+      system:
+      mkDefault {
+        inherit system specialArgs;
+        modules = [
+          self.nixosModules.default
+          {
+            networking.hostName = mkForce hostname;
+          }
+          outputs.nixosModules.default
+        ];
+      }
+    );
 
-    homeConfigurations = genAttrs systems (system: mkDefault {
-      inherit system extraSpecialArgs;
-      modules = [
-        self.homeModules.default
-        outputs.homeModules.default
-      ];
-    });
+    homeConfigurations = genAttrs systems (
+      system:
+      mkDefault {
+        inherit system extraSpecialArgs;
+        modules = [
+          self.homeModules.default
+          {
+            home.username = mkForce username;
+            home.homeDirectory = mkDefault /home/${username};
+          }
+          outputs.homeModules.default
+        ];
+      }
+    );
 
-    perSystem = pkgs:
+    perSystem =
+      pkgs:
       let
         inherit (pkgs.stdenv) hostPlatform;
       in
