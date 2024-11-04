@@ -54,11 +54,18 @@ in
       source = mkIfPath programs.zellij.layout;
     };
 
-    programs.nushell.extraConfig = mkIf programs.zellij.enableNushellIntegration (readFile ./config.nu);
-
     home.sessionVariables = {
       ZELLIJ_AUTO_ATTACH = mkIf programs.zellij.shellIntegration.autoAttach "true";
       ZELLIJ_AUTO_EXIT = mkIf programs.zellij.shellIntegration.autoExit "true";
+    };
+
+    programs.nushell = mkIf programs.zellij.enableNushellIntegration {
+      extraConfig = readFile ./config.nu;
+
+      environmentVariables = {
+        ZELLIJ_AUTO_ATTACH = mkIf programs.zellij.shellIntegration.autoAttach "true";
+        ZELLIJ_AUTO_EXIT = mkIf programs.zellij.shellIntegration.autoExit "true";
+      };
     };
   };
 }

@@ -10,10 +10,11 @@ in
     self.nixosModules.wsl
     self.nixosModules.nh
     self.nixosModules.fish
+    self.nixosModules.nushell
   ];
 
   programs = {
-    fish.enable = true;
+    nushell.enable = true;
   };
 
   nix.settings.experimental-features = [
