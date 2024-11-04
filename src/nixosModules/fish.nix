@@ -7,7 +7,7 @@
 
 let
   inherit (config) programs;
-  inherit (lib) mkIf mkDefault;
+  inherit (lib) mkIf;
 in
 {
   config = mkIf programs.fish.enable {
@@ -17,6 +17,6 @@ in
       '';
     };
 
-    users.defaultUserShell = mkDefault pkgs.fish;
+    users.defaultUserShell = pkgs.fish;
   };
 }

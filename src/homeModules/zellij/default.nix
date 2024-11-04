@@ -26,15 +26,17 @@ let
 in
 {
   options = {
-    programs.zellij.layout = mkOption {
-      type = either str path;
-      default = ./default.kdl;
-      description = "The default layout.";
-    };
+    programs.zellij = {
+      layout = mkOption {
+        type = either str path;
+        default = ./default.kdl;
+        description = "The default layout.";
+      };
 
-    programs.zellij.shellIntegration = {
-      autoAttach = mkEnableOption "Automatically attach to Zellij";
-      autoExit = mkEnableOption "Automatically exit with Zellij";
+      shellIntegration = {
+        autoAttach = mkEnableOption "Automatically attach to Zellij";
+        autoExit = mkEnableOption "Automatically exit with Zellij";
+      };
 
       enableNushellIntegration = mkEnableOption "Enable Zellij Nushell integration";
     };
@@ -52,7 +54,7 @@ in
       source = mkIfPath programs.zellij.layout;
     };
 
-    programs.nushell.extraConfig = mkIf programs.zellij.enableNushellIntegration readFile ./config.nu;
+    programs.nushell.extraConfig = mkIf programs.zellij.enableNushellIntegration (readFile ./config.nu);
 
     home.sessionVariables = {
       ZELLIJ_AUTO_ATTACH = mkIf programs.zellij.shellIntegration.autoAttach "true";
