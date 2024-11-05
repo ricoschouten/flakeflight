@@ -16,9 +16,15 @@ in
   ];
 
   programs = {
-    git.enable = true;
     fish.enable = true;
     nushell.enable = true;
+
+    git = {
+      enable = true;
+      extraConfig = {
+        init.defaultBranch = "main";
+      };
+    };
   };
 
   # programs.bash.enable = true;
