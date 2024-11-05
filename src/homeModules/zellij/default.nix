@@ -1,10 +1,4 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, lib, ... }:
 
 let
   inherit (config) programs;
@@ -17,18 +11,20 @@ let
     readFile
     ;
 
-  inherit (lib.types) str path either;
-  inherit (pkgs.stdenv) hostPlatform;
-  inherit (inputs) zjstatus;
+  inherit (lib.types) lines path either;
 
   mkIfString = x: mkIf (isString x) x;
   mkIfPath = x: mkIf (isPath x) x;
 in
 {
+  imports = [
+    ./plugins/zjstatus
+  ];
+
   options = {
     programs.zellij = {
       layout = mkOption {
-        type = either str path;
+        type = either lines path;
         default = ./default.kdl;
         description = "The default layout.";
       };
@@ -43,10 +39,6 @@ in
   };
 
   config = mkIf programs.zellij.enable {
-    programs.zellij.settings.plugins."zjstatus" = {
-      _props.location = "file:${zjstatus.packages.${hostPlatform.system}.default}/bin/zjstatus.wasm";
-    };
-
     xdg.configFile."zellij-layout" = {
       enable = true;
       target = "zellij/layouts/default.kdl";
