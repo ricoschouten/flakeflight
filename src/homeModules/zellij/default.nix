@@ -52,7 +52,7 @@ in
     };
 
     programs.nushell = mkIf programs.zellij.enableNushellIntegration {
-      extraConfig = readFile ./config.nu;
+      extraConfig = readFile ./auto-start.nu;
 
       environmentVariables = {
         ZELLIJ_AUTO_ATTACH = mkIf programs.zellij.shellIntegration.autoAttach "true";
