@@ -8,6 +8,7 @@ in
     self.nixosModules.users
     self.nixosModules.home-manager
     self.nixosModules.wsl
+    self.nixosModules.minecraft
     self.nixosModules.nh
     self.nixosModules.fish
     self.nixosModules.nushell
